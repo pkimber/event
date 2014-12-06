@@ -65,11 +65,27 @@ reversion.register(EventType)
 
 class EventManager(models.Manager):
 
-    def published(self):
+    def _eight_months(self):
         today = timezone.now().date()
-        two_months = today + relativedelta(months=2)
+        return today + relativedelta(months=8)
+
+    def _two_months(self):
+        today = timezone.now().date()
+        return today + relativedelta(months=2)
+
+    def promoted(self):
         return self.model.objects.filter(
-            event_date__lte=two_months,
+            event_date__gt=self._two_months(),
+            event_date__lte=self._eight_months(),
+            status__publish=True,
+        ).exclude(
+            deleted=True
+        )
+
+    def published(self):
+        return self.model.objects.filter(
+            event_date__gte=timezone.now().date(),
+            event_date__lte=self._two_months(),
             status__publish=True,
         ).exclude(
             deleted=True
