@@ -25,10 +25,11 @@ class EventForm(RequiredFieldForm):
         fields = (
             'status',
             'event_type',
-            'event_date',
-            'description',
+            'start_date',
             'start_time',
+            'end_date',
             'end_time',
+            'description',
             'location',
             'notes',
         )

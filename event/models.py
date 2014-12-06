@@ -82,26 +82,28 @@ class EventManager(models.Manager):
 
     def promoted(self):
         return self._published().filter(
-            event_date__gt=self._two_months(),
-            event_date__lte=self._eight_months(),
+            start_date__gt=self._two_months(),
+            start_date__lte=self._eight_months(),
             event_type__promote=True,
         )
 
     def published(self):
         return self._published().filter(
-            event_date__gte=timezone.now().date(),
-            event_date__lte=self._two_months(),
+            start_date__gte=timezone.now().date(),
+            start_date__lte=self._two_months(),
         )
 
 
 class Event(TimeStampedModel):
 
-    event_date = models.DateField()
     event_type = models.ForeignKey(EventType)
     description = models.CharField(max_length=200, blank=True)
+    start_date = models.DateField()
     start_time = models.TimeField(
+        blank=True, null=True,
         help_text="Please enter in 24 hour format e.g. 19:00",
     )
+    end_date = models.DateField(blank=True, null=True)
     end_time = models.TimeField(
         blank=True, null=True,
         help_text="Please enter in 24 hour format e.g. 21:00",
@@ -113,7 +115,7 @@ class Event(TimeStampedModel):
     objects = EventManager()
 
     class Meta:
-        ordering = ('event_date', 'start_time')
+        ordering = ('start_date', 'start_time')
         verbose_name = 'Event'
         verbose_name_plural = 'Events'
 

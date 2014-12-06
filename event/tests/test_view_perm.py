@@ -29,7 +29,7 @@ class TestViewPerm(PermTestCase):
 
     def test_event_update(self):
         event = EventFactory(
-            event_date=date(2013, 3, 30),
+            start_date=date(2013, 3, 30),
             start_time=timezone.now().time(),
         )
         url = reverse(

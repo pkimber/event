@@ -68,7 +68,7 @@
                 <td>
                   <a href="{% url 'event.update' o.pk %}">
                     <i class="fa fa-edit"></i>
-                    {{ o.event_date|date:'d/m/Y' }}
+                    {{ o.start_date|date:'d/m/Y' }}
                     <br />
                     {{ o.start_time|date:'h:iA' }}
                     {% if o.end_time %}
