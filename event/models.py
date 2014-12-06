@@ -9,9 +9,10 @@ from base.model_utils import TimeStampedModel
 
 
 class Event(TimeStampedModel):
+    """TODO Foreign key for location and meeting type."""
 
     event_date = models.DateField()
-    description = models.TextField()
+    description = models.CharField(max_length=200, blank=True)
     start_time = models.TimeField(
         help_text="Please enter in 24 hour format e.g. 19:00",
     )
@@ -19,7 +20,7 @@ class Event(TimeStampedModel):
         blank=True, null=True,
         help_text="Please enter in 24 hour format e.g. 21:00",
     )
-    location = models.TextField()
+    location = models.CharField(max_length=200, blank=True)
     notes = models.TextField(blank=True)
 
     class Meta:
