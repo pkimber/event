@@ -1,0 +1,65 @@
+{% extends 'project/base.html' %}
+
+{% block title %}
+  Event status
+{% endblock title %}
+
+{% block sub_heading %}
+  Event status
+{% endblock sub_heading %}
+
+{% block content %}
+  <div class="pure-g">
+    <div class="pure-u-1">
+      <div class="pure-menu pure-menu-open pure-menu-horizontal">
+        <ul>
+          <li>
+            <a href="{% url 'event.list' %}">
+              <i class="fa fa-reply"></i>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'event.status.create' %}">
+              <i class="fa fa-calendar"></i>
+              Add status
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="pure-g">
+    <div class="pure-u-1">
+      <div class="l-box">
+        <table class="pure-table pure-table-bordered">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Property</th>
+              <th>Yes/No</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in object_list %}
+              <tr valign="top">
+                <td>
+                  <a href="{% url 'event.status.update' o.pk %}">
+                    <i class="fa fa-edit"></i>
+                    {{ o.description }}
+                  </a>
+                </td>
+                <td>
+                  Publish
+                </td>
+                <td>
+                  {{ o.publish|yesno|capfirst }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+

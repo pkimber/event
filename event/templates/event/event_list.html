@@ -24,6 +24,24 @@
               Add event
             </a>
           </li>
+          <li>
+            <a href="{% url 'event.location.list' %}">
+              <i class="fa fa-calendar"></i>
+              Locations
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'event.status.list' %}">
+              <i class="fa fa-calendar"></i>
+              Event status
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'event.type.list' %}">
+              <i class="fa fa-calendar"></i>
+              Event types
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -34,13 +52,19 @@
         <table class="pure-table pure-table-bordered">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Description</th>
+              <th>Type</th>
+              <th>Date and time</th>
+              <th>Description and location</th>
             </tr>
           </thead>
           <tbody>
             {% for o in object_list %}
               <tr valign="top">
+                <td>
+                  {{ o.event_type }}
+                  <br />
+                  <strong>{{ o.status }}</strong>
+                </td>
                 <td>
                   <a href="{% url 'event.update' o.pk %}">
                     <i class="fa fa-edit"></i>
@@ -54,7 +78,7 @@
                 </td>
                 <td>
                   {{ o.description }}
-                  @ {{ o.location }}
+                  @ {{ o.location.description }}
                   {% if o.notes %}
                     <br />
                     {{ o.notes }}
