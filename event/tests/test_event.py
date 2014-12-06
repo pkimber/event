@@ -24,6 +24,7 @@ class TestEvent(TestCase):
         six = today + relativedelta(months=6)
         year = today + relativedelta(years=1)
         publish = EventStatusFactory(publish=True)
+        pending = EventStatusFactory(publish=False)
         promote = EventTypeFactory(promote=True)
         routine = EventTypeFactory(promote=False, routine=True)
         start = timezone.now().time()
@@ -32,16 +33,26 @@ class TestEvent(TestCase):
             description='a', event_date=one, start_time=start, status=publish
         )
         EventFactory(
-            description='b', event_date=six, start_time=start, status=publish
+            description='b', event_date=six, start_time=start, status=publish,
+            event_type=promote,
+        )
+        # do NOT include this one because it is a routine event (not promoted)
+        EventFactory(
+            description='c', event_date=six, start_time=start, status=publish,
+            event_type=routine,
         )
         # do NOT include this one because it is older than 8 months
         EventFactory(
-            description='c', event_date=year, start_time=start, status=publish
+            description='d', event_date=year, start_time=start, status=publish
         )
         # do NOT include this one because it is deleted
         EventFactory(
-            description='d', event_date=six, start_time=start, status=publish,
+            description='e', event_date=six, start_time=start, status=publish,
             deleted=True,
+        )
+        # do NOT include this one because it is not published
+        EventFactory(
+            description='e', event_date=six, start_time=start, status=pending,
         )
         events = Event.objects.promoted()
         self.assertEquals(
