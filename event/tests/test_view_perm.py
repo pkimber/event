@@ -7,7 +7,6 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 
 from base.tests.test_utils import PermTestCase
-from login.tests.scenario import default_scenario_login
 
 from .factories import (
     EventFactory,
