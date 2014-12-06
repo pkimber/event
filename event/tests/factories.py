@@ -11,12 +11,6 @@ from event.models import (
 )
 
 
-class EventFactory(factory.django.DjangoModelFactory):
-
-    class Meta:
-        model = Event
-
-
 class EventLocationFactory(factory.django.DjangoModelFactory):
 
     class Meta:
@@ -33,3 +27,13 @@ class EventTypeFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = EventType
+
+
+class EventFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Event
+
+    event_type = factory.SubFactory(EventTypeFactory)
+    location = factory.SubFactory(EventLocationFactory)
+    status = factory.SubFactory(EventStatusFactory)

@@ -1,7 +1,10 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
+from dateutil.relativedelta import relativedelta
+
 from django.db import models
+from django.utils import timezone
 
 import reversion
 
@@ -60,6 +63,19 @@ class EventType(TimeStampedModel):
 reversion.register(EventType)
 
 
+class EventManager(models.Manager):
+
+    def published(self):
+        today = timezone.now().date()
+        two_months = today + relativedelta(months=2)
+        return self.model.objects.filter(
+            event_date__lte=two_months,
+            status__publish=True,
+        ).exclude(
+            deleted=True
+        )
+
+
 class Event(TimeStampedModel):
 
     event_date = models.DateField()
@@ -72,10 +88,11 @@ class Event(TimeStampedModel):
         blank=True, null=True,
         help_text="Please enter in 24 hour format e.g. 21:00",
     )
-    location = models.ForeignKey(EventLocation, blank=True, null=True)
+    location = models.ForeignKey(EventLocation)
     notes = models.TextField(blank=True)
     status = models.ForeignKey(EventStatus)
     deleted = models.BooleanField(default=False)
+    objects = EventManager()
 
     class Meta:
         ordering = ('event_date', 'start_time')
