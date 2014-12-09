@@ -1,0 +1,14 @@
+{% if o.permission.slug == 'staff' %}
+  <i class="fa fa-lock"></i>
+{% elif o.permission.slug == 'user' %}
+  <i class="fa fa-user"></i>
+{% endif %}
+{{ o.permission.description }}
+<br />
+{% if not o.status.publish %}
+  <strike>
+{% endif %}
+{{ o.status }}
+{% if not o.status.publish %}
+  </strike>
+{% endif %}

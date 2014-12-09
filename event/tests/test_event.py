@@ -6,12 +6,16 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
-from event.models import Event
+from event.models import (
+    Event,
+    Permission,
+)
 
 from .factories import (
+    CategoryFactory,
     EventFactory,
-    EventStatusFactory,
-    EventTypeFactory,
+    PermissionFactory,
+    StatusFactory,
 )
 
 
@@ -23,36 +27,40 @@ class TestEvent(TestCase):
         one = today + relativedelta(days=7)
         six = today + relativedelta(months=6)
         year = today + relativedelta(years=1)
-        publish = EventStatusFactory(publish=True)
-        pending = EventStatusFactory(publish=False)
-        promote = EventTypeFactory(promote=True)
-        routine = EventTypeFactory(promote=False, routine=True)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        publish = StatusFactory(publish=True)
+        pending = StatusFactory(publish=False)
+        promote = CategoryFactory(promote=True)
+        routine = CategoryFactory(promote=False, routine=True)
         start = timezone.now().time()
         # do NOT include this one because it is less than 2 months
         EventFactory(
-            description='a', start_date=one, start_time=start, status=publish
+            description='a', start_date=one, start_time=start, status=publish,
+            permission=public,
         )
         EventFactory(
             description='b', start_date=six, start_time=start, status=publish,
-            event_type=promote,
+            permission=public, category=promote,
         )
         # do NOT include this one because it is a routine event (not promoted)
         EventFactory(
             description='c', start_date=six, start_time=start, status=publish,
-            event_type=routine,
+            permission=public, category=routine,
         )
         # do NOT include this one because it is older than 8 months
         EventFactory(
-            description='d', start_date=year, start_time=start, status=publish
+            description='d', start_date=year, start_time=start, status=publish,
+            permission=public,
         )
         # do NOT include this one because it is deleted
         EventFactory(
             description='e', start_date=six, start_time=start, status=publish,
-            deleted=True,
+            permission=public, deleted=True,
         )
         # do NOT include this one because it is not published
         EventFactory(
             description='e', start_date=six, start_time=start, status=pending,
+            permission=public,
         )
         events = Event.objects.promoted()
         self.assertEquals(
@@ -66,21 +74,26 @@ class TestEvent(TestCase):
         one = today + relativedelta(days=7)
         two = today + relativedelta(days=14)
         year = today + relativedelta(years=1)
-        publish = EventStatusFactory(publish=True)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        publish = StatusFactory(publish=True)
         start = timezone.now().time()
         EventFactory(
-            description='a', start_date=one, start_time=start, status=publish
+            description='a', start_date=one, start_time=start, status=publish,
+            permission=public,
         )
         EventFactory(
-            description='b', start_date=two, start_time=start, status=publish
+            description='b', start_date=two, start_time=start, status=publish,
+            permission=public,
         )
         # do NOT include this one because it is older than two months
         EventFactory(
-            description='c', start_date=year, start_time=start, status=publish
+            description='c', start_date=year, start_time=start, status=publish,
+            permission=public,
         )
         # do NOT include this one because it for yesterday
         EventFactory(
-            description='d', start_date=b4, start_time=start, status=publish
+            description='d', start_date=b4, start_time=start, status=publish,
+            permission=public,
         )
         events = Event.objects.published()
         self.assertEquals(
@@ -91,15 +104,17 @@ class TestEvent(TestCase):
     def test_published_delete(self):
         today = timezone.now().date()
         one = today + relativedelta(days=7)
-        publish = EventStatusFactory(publish=True)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        publish = StatusFactory(publish=True)
         start = timezone.now().time()
         EventFactory(
-            description='a', start_date=one, start_time=start, status=publish
+            description='a', start_date=one, start_time=start, status=publish,
+            permission=public,
         )
         # do NOT include this one because it is deleted
         EventFactory(
             description='b', start_date=one, start_time=start, status=publish,
-            deleted=True
+            permission=public, deleted=True,
         )
         events = Event.objects.published()
         self.assertEquals(
@@ -110,14 +125,17 @@ class TestEvent(TestCase):
     def test_published_status(self):
         today = timezone.now().date()
         one = today + relativedelta(days=7)
-        publish = EventStatusFactory(publish=True)
-        pending = EventStatusFactory(publish=False)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        publish = StatusFactory(publish=True)
+        pending = StatusFactory(publish=False)
         start = timezone.now().time()
         EventFactory(
-            description='a', start_date=one, start_time=start, status=pending
+            description='a', start_date=one, start_time=start, status=pending,
+            permission=public,
         )
         EventFactory(
             description='b', start_date=one, start_time=start, status=publish,
+            permission=public,
         )
         events = Event.objects.published()
         self.assertEquals(

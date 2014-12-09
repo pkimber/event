@@ -1,0 +1,18 @@
+{% if o.notes_public %}
+  <br />
+  {{ o.notes_public }}
+{% endif %}
+{% if o.notes_user %}
+  <br />
+  <small>
+    <i class="fa fa-user"></i>
+  </small>
+  {{ o.notes_user }}
+{% endif %}
+{% if o.notes_staff %}
+  <br />
+  <small>
+    <i class="fa fa-lock"></i>
+  </small>
+  {{ o.notes_staff }}
+{% endif %}

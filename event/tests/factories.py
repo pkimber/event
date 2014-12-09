@@ -4,29 +4,36 @@ from __future__ import unicode_literals
 import factory
 
 from event.models import (
+    Category,
     Event,
-    EventLocation,
-    EventStatus,
-    EventType,
+    Location,
+    Permission,
+    Status,
 )
 
 
-class EventLocationFactory(factory.django.DjangoModelFactory):
+class CategoryFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = EventLocation
+        model = Category
 
 
-class EventStatusFactory(factory.django.DjangoModelFactory):
-
-    class Meta:
-        model = EventStatus
-
-
-class EventTypeFactory(factory.django.DjangoModelFactory):
+class LocationFactory(factory.django.DjangoModelFactory):
 
     class Meta:
-        model = EventType
+        model = Location
+
+
+class PermissionFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Permission
+
+
+class StatusFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Status
 
 
 class EventFactory(factory.django.DjangoModelFactory):
@@ -34,6 +41,7 @@ class EventFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Event
 
-    event_type = factory.SubFactory(EventTypeFactory)
-    location = factory.SubFactory(EventLocationFactory)
-    status = factory.SubFactory(EventStatusFactory)
+    category = factory.SubFactory(CategoryFactory)
+    location = factory.SubFactory(LocationFactory)
+    permission = factory.SubFactory(PermissionFactory)
+    status = factory.SubFactory(StatusFactory)

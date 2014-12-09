@@ -4,48 +4,44 @@ from __future__ import unicode_literals
 from base.form_utils import RequiredFieldForm
 
 from .models import (
+    Category,
     Event,
-    EventLocation,
-    EventStatus,
-    EventType,
+    Location,
+    Permission,
+    Status,
 )
 
 
-class EventForm(RequiredFieldForm):
+class CategoryForm(RequiredFieldForm):
 
     def __init__(self, *args, **kwargs):
-        super(EventForm, self).__init__(*args, **kwargs)
-        for name in ('description', 'location', 'notes'):
+        super(CategoryForm, self).__init__(*args, **kwargs)
+        for name in ('description', 'css_class_name'):
             self.fields[name].widget.attrs.update(
                 {'class': 'pure-input-2-3'}
             )
 
     class Meta:
-        model = Event
+        model = Category
         fields = (
-            'status',
-            'event_type',
-            'start_date',
-            'start_time',
-            'end_date',
-            'end_time',
             'description',
-            'location',
-            'notes',
+            'promote',
+            'routine',
+            'css_class_name',
         )
 
 
-class EventLocationForm(RequiredFieldForm):
+class LocationForm(RequiredFieldForm):
 
     def __init__(self, *args, **kwargs):
-        super(EventLocationForm, self).__init__(*args, **kwargs)
+        super(LocationForm, self).__init__(*args, **kwargs)
         for name in ('description', 'url', 'url_map', 'notes'):
             self.fields[name].widget.attrs.update(
                 {'class': 'pure-input-2-3'}
             )
 
     class Meta:
-        model = EventLocation
+        model = Location
         fields = (
             'description',
             'url',
@@ -54,37 +50,81 @@ class EventLocationForm(RequiredFieldForm):
         )
 
 
-class EventStatusForm(RequiredFieldForm):
+class EventForm(RequiredFieldForm):
 
     def __init__(self, *args, **kwargs):
-        super(EventStatusForm, self).__init__(*args, **kwargs)
+        super(EventForm, self).__init__(*args, **kwargs)
+        for name in ('description', 'location'):
+            self.fields[name].widget.attrs.update(
+                {'class': 'pure-input-2-3'}
+            )
+
+    class Meta:
+        model = Event
+        fields = (
+            'permission',
+            'status',
+            'category',
+            'start_date',
+            'start_time',
+            'end_date',
+            'end_time',
+            'description',
+            'location',
+            #'notes_public',
+            #'notes_user',
+            #'notes_staff',
+        )
+
+
+class EventNotesForm(RequiredFieldForm):
+
+    def __init__(self, *args, **kwargs):
+        super(EventNotesForm, self).__init__(*args, **kwargs)
+        for name in ('notes_public', 'notes_user', 'notes_staff'):
+            self.fields[name].widget.attrs.update(
+                {'class': 'pure-input-2-3'}
+            )
+
+    class Meta:
+        model = Event
+        fields = (
+            'notes_public',
+            'notes_user',
+            'notes_staff',
+        )
+
+#class PermissionForm(RequiredFieldForm):
+#
+#    def __init__(self, *args, **kwargs):
+#        super(PermissionForm, self).__init__(*args, **kwargs)
+#        for name in ('description',):
+#            self.fields[name].widget.attrs.update(
+#                {'class': 'pure-input-2-3'}
+#            )
+#
+#    class Meta:
+#        model = Permission
+#        fields = (
+#            'description',
+#            'public',
+#            'web',
+#            'staff',
+#        )
+
+
+class StatusForm(RequiredFieldForm):
+
+    def __init__(self, *args, **kwargs):
+        super(StatusForm, self).__init__(*args, **kwargs)
         for name in ('description',):
             self.fields[name].widget.attrs.update(
                 {'class': 'pure-input-2-3'}
             )
 
     class Meta:
-        model = EventStatus
+        model = Status
         fields = (
             'description',
             'publish',
-        )
-
-
-class EventTypeForm(RequiredFieldForm):
-
-    def __init__(self, *args, **kwargs):
-        super(EventTypeForm, self).__init__(*args, **kwargs)
-        for name in ('description', 'css_class_name'):
-            self.fields[name].widget.attrs.update(
-                {'class': 'pure-input-2-3'}
-            )
-
-    class Meta:
-        model = EventType
-        fields = (
-            'description',
-            'promote',
-            'routine',
-            'css_class_name',
         )

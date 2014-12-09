@@ -1,0 +1,5 @@
+{{ o.start_time|date:'h:iA' }}
+{% if o.end_time %}
+  <br />
+   {{ o.end_time|date:'h:iA' }}
+{% endif %}

@@ -33,13 +33,13 @@
           <li>
             <a href="{% url 'event.status.list' %}">
               <i class="fa fa-calendar"></i>
-              Event status
+              Status
             </a>
           </li>
           <li>
-            <a href="{% url 'event.type.list' %}">
+            <a href="{% url 'event.category.list' %}">
               <i class="fa fa-calendar"></i>
-              Event types
+              Categories
             </a>
           </li>
         </ul>
@@ -62,48 +62,25 @@
             {% for o in object_list %}
               <tr valign="top">
                 <td>
-                  {{ o.start_date|date:'d/m/Y' }}
-                  {% if o.end_date %}
-                    <br />
-                    {{ o.end_date|date:'d/m/Y' }}
-                  {% endif %}
-                  </a>
+                  {% include 'event/_event_date.html' %}
                 </td>
                 <td>
-                  {{ o.start_time|date:'h:iA' }}
-                  {% if o.end_time %}
-                    <br />
-                     {{ o.end_time|date:'h:iA' }}
-                  {% endif %}
+                  {% include 'event/_event_time.html' %}
                 </td>
                 <td>
                   <a href="{% url 'event.update' o.pk %}">
                     <i class="fa fa-edit"></i>
-                    {{ o.event_type }}
-                    <br />
-                    {% if o.description %}
-                      {{ o.description }}
-                      <br />
-                    {% endif %}
-                    {{ o.location.description }}
+                    {% include 'event/_event_description.html' %}
                   </a>
-                  {% if o.notes %}
-                    <br />
-                    {{ o.notes }}
-                  {% endif %}
+                  {% include 'event/_event_notes.html' %}
+                  <br />
+                  <a href="{% url 'event.update.notes' o.pk %}">
+                    <i class="fa fa-edit"></i>
+                    <small>Edit notes...</small>
+                  </a>
                 </td>
                 <td>
-                  {% if o.status.publish %}
-                    <strong>
-                  {% else %}
-                    <strike>
-                  {% endif %}
-                  {{ o.status }}
-                  {% if o.status.publish %}
-                    <strong>
-                  {% else %}
-                    </strike>
-                  {% endif %}
+                  {% include 'event/_event_status.html' %}
                 </td>
               </tr>
             {% endfor %}

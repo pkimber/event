@@ -9,10 +9,11 @@ from django.core.urlresolvers import reverse
 from base.tests.test_utils import PermTestCase
 
 from .factories import (
+    CategoryFactory,
     EventFactory,
-    EventLocationFactory,
-    EventStatusFactory,
-    EventTypeFactory,
+    LocationFactory,
+    PermissionFactory,
+    StatusFactory,
 )
 
 
@@ -38,44 +39,58 @@ class TestViewPerm(PermTestCase):
         )
         self._assert_staff(url)
 
+    def test_event_category_create(self):
+        self._assert_staff(reverse('event.category.create'))
+
+    def test_event_category_list(self):
+        self._assert_staff(reverse('event.category.list'))
+
+    def test_event_category_update(self):
+        category = CategoryFactory()
+        url = reverse(
+            'event.category.update',
+            kwargs=dict(pk=category.pk)
+        )
+        self._assert_staff(url)
+
     def test_event_location_create(self):
-        self._assert_staff(reverse('event.create'))
+        self._assert_staff(reverse('event.location.create'))
 
     def test_event_location_list(self):
-        self._assert_staff(reverse('event.list'))
+        self._assert_staff(reverse('event.location.list'))
 
     def test_event_location_update(self):
-        event_location = EventLocationFactory()
+        location = LocationFactory()
         url = reverse(
             'event.location.update',
-            kwargs=dict(pk=event_location.pk)
+            kwargs=dict(pk=location.pk)
         )
         self._assert_staff(url)
+
+    #def test_event_permission_create(self):
+    #    self._assert_staff(reverse('event.permission.create'))
+
+    #def test_event_permission_list(self):
+    #    self._assert_staff(reverse('event.permission.list'))
+
+    #def test_event_permission_update(self):
+    #    permission = PermissionFactory()
+    #    url = reverse(
+    #        'event.permission.update',
+    #        kwargs=dict(pk=permission.pk)
+    #    )
+    #    self._assert_staff(url)
 
     def test_event_status_create(self):
-        self._assert_staff(reverse('event.create'))
+        self._assert_staff(reverse('event.status.create'))
 
     def test_event_status_list(self):
-        self._assert_staff(reverse('event.list'))
+        self._assert_staff(reverse('event.status.list'))
 
     def test_event_status_update(self):
-        event_status = EventStatusFactory()
+        status = StatusFactory()
         url = reverse(
             'event.status.update',
-            kwargs=dict(pk=event_status.pk)
-        )
-        self._assert_staff(url)
-
-    def test_event_type_create(self):
-        self._assert_staff(reverse('event.create'))
-
-    def test_event_type_list(self):
-        self._assert_staff(reverse('event.list'))
-
-    def test_event_type_update(self):
-        event_type = EventTypeFactory()
-        url = reverse(
-            'event.type.update',
-            kwargs=dict(pk=event_type.pk)
+            kwargs=dict(pk=status.pk)
         )
         self._assert_staff(url)

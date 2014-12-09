@@ -16,17 +16,47 @@ from braces.views import (
 from base.view_utils import BaseMixin
 
 from .forms import (
+    CategoryForm,
     EventForm,
-    EventLocationForm,
-    EventStatusForm,
-    EventTypeForm,
+    EventNotesForm,
+    LocationForm,
+    #PermissionForm,
+    StatusForm,
 )
 from .models import (
+    Category,
     Event,
-    EventLocation,
-    EventStatus,
-    EventType,
+    Location,
+    Permission,
+    Status,
 )
+
+
+class CategoryCreateView(
+        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, CreateView):
+
+    form_class = CategoryForm
+    model = Category
+
+    def get_success_url(self):
+        return reverse('event.category.list')
+
+
+class CategoryListView(
+        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, ListView):
+
+    model = Category
+    #template_name = 'dash/category.html'
+
+
+class CategoryUpdateView(
+        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
+
+    form_class = CategoryForm
+    model = Category
+
+    def get_success_url(self):
+        return reverse('event.category.list')
 
 
 class EventCreateView(
@@ -45,6 +75,24 @@ class EventListView(
     model = Event
 
 
+class EventUpdateNotesView(
+        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
+
+    form_class = EventNotesForm
+    model = Event
+    template_name = 'event/event_notes_form.html'
+
+    #def get_context_data(self, **kwargs):
+    #    context = super(EventUpdateNotesView, self).get_context_data(**kwargs)
+    #    context.update(dict(
+    #        event=self.object,
+    #    ))
+    #    return context
+
+    def get_success_url(self):
+        return reverse('event.list')
+
+
 class EventUpdateView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
 
@@ -55,81 +103,82 @@ class EventUpdateView(
         return reverse('event.list')
 
 
-class EventLocationCreateView(
+class LocationCreateView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, CreateView):
 
-    form_class = EventLocationForm
-    model = EventLocation
+    form_class = LocationForm
+    model = Location
 
     def get_success_url(self):
         return reverse('event.location.list')
 
 
-class EventLocationListView(
+class LocationListView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, ListView):
 
-    model = EventLocation
+    model = Location
 
 
-class EventLocationUpdateView(
+class LocationUpdateView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
 
-    form_class = EventLocationForm
-    model = EventLocation
+    form_class = LocationForm
+    model = Location
 
     def get_success_url(self):
         return reverse('event.location.list')
 
 
-class EventStatusCreateView(
+#class PermissionCreateView(
+#        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, CreateView):
+#
+#    form_class = PermissionForm
+#    model = Permission
+#
+#    def get_success_url(self):
+#        return reverse('event.permission.list')
+#
+#
+#class PermissionListView(
+#        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, ListView):
+#
+#    model = Permission
+#
+#
+#class PermissionUpdateView(
+#        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
+#
+#    form_class = PermissionForm
+#    model = Permission
+#
+#    def get_success_url(self):
+#        return reverse('event.permission.list')
+
+
+class StatusCreateView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, CreateView):
 
-    form_class = EventStatusForm
-    model = EventStatus
+    form_class = StatusForm
+    model = Status
 
     def get_success_url(self):
         return reverse('event.status.list')
 
 
-class EventStatusListView(
+class StatusListView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, ListView):
 
-    model = EventStatus
-    template_name = 'dash/event_status.html'
+    model = Status
+    #template_name = 'dash/event_status.html'
 
 
-class EventStatusUpdateView(
+class StatusUpdateView(
         LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
 
-    form_class = EventStatusForm
-    model = EventStatus
+    form_class = StatusForm
+    model = Status
 
     def get_success_url(self):
         return reverse('event.status.list')
 
 
-class EventTypeCreateView(
-        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, CreateView):
-
-    form_class = EventTypeForm
-    model = EventType
-
-    def get_success_url(self):
-        return reverse('event.type.list')
-
-
-class EventTypeListView(
-        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, ListView):
-
-    model = EventType
-    template_name = 'dash/event_types.html'
-
-
-class EventTypeUpdateView(
-        LoginRequiredMixin, StaffuserRequiredMixin, BaseMixin, UpdateView):
-
-    form_class = EventTypeForm
-    model = EventType
-
-    def get_success_url(self):
-        return reverse('event.type.list')

@@ -1,0 +1,42 @@
+{% extends 'project/base.html' %}
+
+{% block sub_title %}
+  Calendar event
+{% endblock sub_title %}
+
+{% block sub_heading %}
+  Calendar event
+{% endblock sub_heading %}
+
+{% block content %}
+  <div class="pure-g">
+    <div class="pure-u-1">
+      <div class="l-box">
+
+        <table class="pure-table pure-table-bordered">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Description and location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr valign="top">
+              <td>
+                {% include 'event/_event_date.html' with o=object %}
+              </td>
+              <td>
+                {% include 'event/_event_time.html' with o=object %}
+              </td>
+              <td>
+                {% include 'event/_event_description.html' with o=object %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {% include '_form.html' %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}

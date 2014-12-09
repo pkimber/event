@@ -11,41 +11,9 @@ import reversion
 from base.model_utils import TimeStampedModel
 
 
-class EventLocation(TimeStampedModel):
+class Category(TimeStampedModel):
 
-    description = models.CharField(max_length=200)
-    url = models.URLField(blank=True, null=True)
-    url_map = models.URLField(blank=True, null=True)
-    notes = models.TextField(blank=True)
-
-    class Meta:
-        ordering = ('description',)
-        verbose_name = 'Location'
-        verbose_name_plural = 'Locations'
-
-    def __str__(self):
-        return '{}'.format(self.description)
-
-reversion.register(EventLocation)
-
-
-class EventStatus(TimeStampedModel):
-
-    description = models.CharField(max_length=200)
-    publish = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ('description',)
-        verbose_name = 'Status'
-        verbose_name_plural = 'Status'
-
-    def __str__(self):
-        return '{}'.format(self.description)
-
-reversion.register(EventStatus)
-
-
-class EventType(TimeStampedModel):
+    """This needs to have a level e.g. public, logged in and member of staff."""
 
     description = models.CharField(max_length=200)
     promote = models.BooleanField(default=False)
@@ -60,10 +28,105 @@ class EventType(TimeStampedModel):
     def __str__(self):
         return '{}'.format(self.description)
 
-reversion.register(EventType)
+reversion.register(Category)
+
+
+class Location(TimeStampedModel):
+    """
+    Need some private notes so we can tell where the location is e.g. homegroup.
+    Or... perhaps we need an option to contact us (using the enquiry form).
+    So... if someone is not logged in, they get told to contact us....
+    """
+
+    description = models.CharField(max_length=200)
+    url = models.URLField(blank=True, null=True)
+    url_map = models.URLField(blank=True, null=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ('description',)
+        verbose_name = 'Location'
+        verbose_name_plural = 'Locations'
+
+    def __str__(self):
+        return '{}'.format(self.description)
+
+reversion.register(Location)
+
+
+class PermissionManager(models.Manager):
+
+    def create_permission(self, slug, description):
+        permission = self.model(
+            slug=slug,
+            description=description,
+        )
+        permission.save()
+        return permission
+
+    def init_permission(self, slug, description):
+        try:
+            permission = self.model.objects.get(slug=slug)
+            permission.description = description
+            permission.save()
+        except self.model.DoesNotExist:
+            permission = self.create_permission(slug, description)
+        return permission
+
+
+class Permission(TimeStampedModel):
+
+    PUBLIC = 'public'
+    STAFF = 'staff'
+    USER = 'user'
+
+    slug = models.SlugField(unique=True)
+    description = models.CharField(max_length=200)
+    objects = PermissionManager()
+
+    class Meta:
+        ordering = ('slug',)
+        verbose_name = 'Permission'
+        verbose_name_plural = 'Permissions'
+
+    def __str__(self):
+        return '{}'.format(self.description)
+
+reversion.register(Permission)
+
+
+class Status(TimeStampedModel):
+    """Staff only for leaders meetings."""
+
+    description = models.CharField(max_length=200)
+    publish = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('description',)
+        verbose_name = 'Status'
+        verbose_name_plural = 'Status'
+
+    def __str__(self):
+        return '{}'.format(self.description)
+
+reversion.register(Status)
 
 
 class EventManager(models.Manager):
+    """
+    Calendar on home page... just the next week + promoted events.
+
+    Separate calendar page.
+
+    We also have church member promotions e.g. Newquay... There don't need to
+    be on the home page.
+
+    And, we have events for the community e.g. Christmas Party
+
+    Need to link an event to another page on the site... for more information.
+
+    What about rotas etc?
+    """
 
     def _eight_months(self):
         today = timezone.now().date()
@@ -84,7 +147,7 @@ class EventManager(models.Manager):
         return self._published().filter(
             start_date__gt=self._two_months(),
             start_date__lte=self._eight_months(),
-            event_type__promote=True,
+            category__promote=True,
         )
 
     def published(self):
@@ -95,8 +158,10 @@ class EventManager(models.Manager):
 
 
 class Event(TimeStampedModel):
+    """Extra info for members e.g. who is leading."""
 
-    event_type = models.ForeignKey(EventType)
+    permission= models.ForeignKey(Permission)
+    category = models.ForeignKey(Category)
     description = models.CharField(max_length=200, blank=True)
     start_date = models.DateField()
     start_time = models.TimeField(
@@ -108,9 +173,11 @@ class Event(TimeStampedModel):
         blank=True, null=True,
         help_text="Please enter in 24 hour format e.g. 21:00",
     )
-    location = models.ForeignKey(EventLocation)
-    notes = models.TextField(blank=True)
-    status = models.ForeignKey(EventStatus)
+    location = models.ForeignKey(Location)
+    notes_public = models.TextField(blank=True)
+    notes_user = models.TextField(blank=True)
+    notes_staff = models.TextField(blank=True)
+    status = models.ForeignKey(Status)
     deleted = models.BooleanField(default=False)
     objects = EventManager()
 
