@@ -52,36 +52,57 @@
         <table class="pure-table pure-table-bordered">
           <thead>
             <tr>
-              <th>Type</th>
-              <th>Date and time</th>
+              <th>Date</th>
+              <th>Time</th>
               <th>Description and location</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {% for o in object_list %}
               <tr valign="top">
                 <td>
-                  {{ o.event_type }}
-                  <br />
-                  <strong>{{ o.status }}</strong>
+                  {{ o.start_date|date:'d/m/Y' }}
+                  {% if o.end_date %}
+                    <br />
+                    {{ o.end_date|date:'d/m/Y' }}
+                  {% endif %}
+                  </a>
+                </td>
+                <td>
+                  {{ o.start_time|date:'h:iA' }}
+                  {% if o.end_time %}
+                    <br />
+                     {{ o.end_time|date:'h:iA' }}
+                  {% endif %}
                 </td>
                 <td>
                   <a href="{% url 'event.update' o.pk %}">
                     <i class="fa fa-edit"></i>
-                    {{ o.start_date|date:'d/m/Y' }}
+                    {{ o.event_type }}
                     <br />
-                    {{ o.start_time|date:'h:iA' }}
-                    {% if o.end_time %}
-                      - {{ o.end_time|date:'h:iA' }}
+                    {% if o.description %}
+                      {{ o.description }}
+                      <br />
                     {% endif %}
+                    {{ o.location.description }}
                   </a>
-                </td>
-                <td>
-                  {{ o.description }}
-                  @ {{ o.location.description }}
                   {% if o.notes %}
                     <br />
                     {{ o.notes }}
+                  {% endif %}
+                </td>
+                <td>
+                  {% if o.status.publish %}
+                    <strong>
+                  {% else %}
+                    <strike>
+                  {% endif %}
+                  {{ o.status }}
+                  {% if o.status.publish %}
+                    <strong>
+                  {% else %}
+                    </strike>
                   {% endif %}
                 </td>
               </tr>
