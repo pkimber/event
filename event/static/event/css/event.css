@@ -1,7 +1,7 @@
 .event {
-    border-top: 2px solid #eee;
+    border-bottom: 2px solid #eee;
     border-left: 8px solid rgb(224, 255, 184);
-    padding: 10px;
+    padding-left: 10px;
 }
 
 .pending {
@@ -11,7 +11,7 @@
 .public {
     border-bottom: 2px solid #eee;
     border-left: 8px solid rgb(224, 255, 184);
-    padding: 10px;
+    padding-left: 10px;
 }
 
 .public-text {
@@ -21,7 +21,7 @@
 .staff {
     border-bottom: 2px solid #eee;
     border-left: 8px solid rgb(255, 192, 203);
-    padding: 10px;
+    padding-left: 10px;
 }
 
 .staff-text {
@@ -31,7 +31,7 @@
 .user {
     border-bottom: 2px solid #eee;
     border-left: 8px solid rgb(255, 255, 102);
-    padding: 10px;
+    padding-left: 10px;
 }
 
 .user-text {

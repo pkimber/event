@@ -1,13 +1,5 @@
-<div class="public">
-  {% if o.notes_public %}
+{% if o.notes_public %}
     {% autoescape off %}
       {{ o.notes_public }}
     {% endautoescape %}
-  {% endif %}
-  <small>
-    <a href="{% url 'event.update.notes' o.pk %}">
-      <i class="fa fa-edit"></i>
-      Edit user or staff notes...
-    </a>
-  </small>
-</div>
+{% endif %}

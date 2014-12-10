@@ -53,19 +53,17 @@
   </div>
   {% for o in object_list %}
     <div class="pure-g">
-      <div class="pure-u-1">
-        <div class="event">
-          {% include 'event/_event_date.html' %}
-          {% include 'event/_event_time.html' %}
-          <small>
-            {% include 'event/_event_status.html' %}
-          </small>
-          <br />
-          <a href="{% url 'event.update' o.pk %}">
-            <i class="fa fa-edit"></i>
-            {% include 'event/_event_description.html' %}
-          </a>
-        </div>
+      <div class="pure-u-1 event">
+        {% include 'event/_event_date.html' %}
+        {% include 'event/_event_time.html' %}
+        <small>
+          {% include 'event/_event_status.html' %}
+        </small>
+        <br />
+        <a href="{% url 'event.update' o.pk %}">
+          <i class="fa fa-edit"></i>
+          {% include 'event/_event_description.html' %}
+        </a>
         {% include 'event/_event_notes_public.html' %}
       </div>
       <div class="pure-u-1 pure-u-md-1-24">
