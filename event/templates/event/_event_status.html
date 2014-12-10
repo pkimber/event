@@ -1,16 +1,21 @@
-{% if o.permission.slug == 'staff' %}
-  <i class="fa fa-lock"></i>
-{% elif o.permission.slug == 'user' %}
-  <i class="fa fa-user"></i>
-{% endif %}
-{{ o.permission.description }}
-<br />
 {% if o.status.publish %}
   <i class="fa fa-check"></i>
 {% else %}
-  <strike>
+  <span class="pending">
+    <i class="fa fa-question"></i>
 {% endif %}
 {{ o.status }}
 {% if not o.status.publish %}
-  </strike>
+  </span>
 {% endif %}
+{% if o.permission.slug == 'staff' %}
+  <span class="staff-text">
+    <i class="fa fa-lock"></i>
+{% elif o.permission.slug == 'user' %}
+  <span class="user-text">
+    <i class="fa fa-user"></i>
+{% else %}
+  <span class="public-text">
+{% endif %}
+  {{ o.permission.description }}
+</span>

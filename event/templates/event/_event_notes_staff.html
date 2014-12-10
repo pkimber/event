@@ -1,0 +1,11 @@
+{% if o.notes_staff %}
+  <div class="staff">
+    <small>
+      <i class="fa fa-lock"></i>
+      Staff notes:
+    </small>
+    {% autoescape off %}
+      {{ o.notes_staff }}
+    {% endautoescape %}
+  </div>
+{% endif %}

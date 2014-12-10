@@ -1,4 +1,9 @@
 {% extends 'project/base.html' %}
+{% load static %}
+
+{% block stylesheets_extra %}
+  <link rel="stylesheet" href="{% static 'event/css/event.css' %}">
+{% endblock stylesheets_extra %}
 
 {% block title %}
   Event list
@@ -46,48 +51,29 @@
       </div>
     </div>
   </div>
-  <div class="pure-g">
-    <div class="pure-u-1">
-      <div class="l-box">
-        {% for o in object_list %}
-          <table class="pure-table pure-table-bordered">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Description and location</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr valign="top">
-                <td>
-                  {% include 'event/_event_date.html' %}
-                </td>
-                <td>
-                  {% include 'event/_event_time.html' %}
-                </td>
-                <td>
-                  <a href="{% url 'event.update' o.pk %}">
-                    <i class="fa fa-edit"></i>
-                    {% include 'event/_event_description.html' %}
-                  </a>
-                </td>
-                <td>
-                  {% include 'event/_event_status.html' %}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          {% include 'event/_event_notes.html' %}
+  {% for o in object_list %}
+    <div class="pure-g">
+      <div class="pure-u-1">
+        <div class="event">
+          {% include 'event/_event_date.html' %}
+          {% include 'event/_event_time.html' %}
+          <small>
+            {% include 'event/_event_status.html' %}
+          </small>
           <br />
-          <a href="{% url 'event.update.notes' o.pk %}">
+          <a href="{% url 'event.update' o.pk %}">
             <i class="fa fa-edit"></i>
-            <small>Edit user or staff notes...</small>
+            {% include 'event/_event_description.html' %}
           </a>
-        {% endfor %}
+        </div>
+        {% include 'event/_event_notes_public.html' %}
+      </div>
+      <div class="pure-u-1 pure-u-md-1-24">
+      </div>
+      <div class="pure-u-1 pure-u-md-23-24">
+        {% include 'event/_event_notes_user.html' %}
+        {% include 'event/_event_notes_staff.html' %}
       </div>
     </div>
-  </div>
+  {% endfor %}
 {% endblock content %}
-

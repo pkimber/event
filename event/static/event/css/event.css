@@ -1,0 +1,39 @@
+.event {
+    border-top: 2px solid #eee;
+    border-left: 8px solid rgb(224, 255, 184);
+    padding: 10px;
+}
+
+.pending {
+    background: rgb(220, 220, 220);
+}
+
+.public {
+    border-bottom: 2px solid #eee;
+    border-left: 8px solid rgb(224, 255, 184);
+    padding: 10px;
+}
+
+.public-text {
+    background: rgb(224, 255, 184);
+}
+
+.staff {
+    border-bottom: 2px solid #eee;
+    border-left: 8px solid rgb(255, 192, 203);
+    padding: 10px;
+}
+
+.staff-text {
+    background: rgb(255, 192, 203);
+}
+
+.user {
+    border-bottom: 2px solid #eee;
+    border-left: 8px solid rgb(255, 255, 102);
+    padding: 10px;
+}
+
+.user-text {
+    background: rgb(255, 255, 102);
+}

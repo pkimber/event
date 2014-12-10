@@ -1,0 +1,7 @@
+{% if o.notes_public %}
+  <div class="public">
+    {% autoescape off %}
+      {{ o.notes_public }}
+    {% endautoescape %}
+  </div>
+{% endif %}
