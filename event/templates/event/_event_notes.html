@@ -1,18 +1,23 @@
 {% if o.notes_public %}
-  <br />
-  {{ o.notes_public }}
+  {% autoescape off %}
+    {{ o.notes_public }}
+  {% endautoescape %}
 {% endif %}
 {% if o.notes_user %}
-  <br />
   <small>
     <i class="fa fa-user"></i>
+    User notes:
   </small>
-  {{ o.notes_user }}
+  {% autoescape off %}
+    {{ o.notes_user }}
+  {% endautoescape %}
 {% endif %}
 {% if o.notes_staff %}
-  <br />
   <small>
     <i class="fa fa-lock"></i>
+    Staff notes:
   </small>
-  {{ o.notes_staff }}
+  {% autoescape off %}
+    {{ o.notes_staff }}
+  {% endautoescape %}
 {% endif %}

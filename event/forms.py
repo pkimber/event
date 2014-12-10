@@ -54,7 +54,7 @@ class EventForm(RequiredFieldForm):
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
-        for name in ('description', 'location'):
+        for name in ('description', 'location', 'notes_public'):
             self.fields[name].widget.attrs.update(
                 {'class': 'pure-input-2-3'}
             )
@@ -71,7 +71,7 @@ class EventForm(RequiredFieldForm):
             'end_time',
             'description',
             'location',
-            #'notes_public',
+            'notes_public',
             #'notes_user',
             #'notes_staff',
         )
@@ -81,7 +81,7 @@ class EventNotesForm(RequiredFieldForm):
 
     def __init__(self, *args, **kwargs):
         super(EventNotesForm, self).__init__(*args, **kwargs)
-        for name in ('notes_public', 'notes_user', 'notes_staff'):
+        for name in ('notes_user', 'notes_staff'):
             self.fields[name].widget.attrs.update(
                 {'class': 'pure-input-2-3'}
             )
@@ -89,7 +89,7 @@ class EventNotesForm(RequiredFieldForm):
     class Meta:
         model = Event
         fields = (
-            'notes_public',
+            #'notes_public',
             'notes_user',
             'notes_staff',
         )

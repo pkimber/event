@@ -5,7 +5,9 @@
 {% endif %}
 {{ o.permission.description }}
 <br />
-{% if not o.status.publish %}
+{% if o.status.publish %}
+  <i class="fa fa-check"></i>
+{% else %}
   <strike>
 {% endif %}
 {{ o.status }}

@@ -49,17 +49,17 @@
   <div class="pure-g">
     <div class="pure-u-1">
       <div class="l-box">
-        <table class="pure-table pure-table-bordered">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Description and location</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for o in object_list %}
+        {% for o in object_list %}
+          <table class="pure-table pure-table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Description and location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
               <tr valign="top">
                 <td>
                   {% include 'event/_event_date.html' %}
@@ -72,20 +72,20 @@
                     <i class="fa fa-edit"></i>
                     {% include 'event/_event_description.html' %}
                   </a>
-                  {% include 'event/_event_notes.html' %}
-                  <br />
-                  <a href="{% url 'event.update.notes' o.pk %}">
-                    <i class="fa fa-edit"></i>
-                    <small>Edit notes...</small>
-                  </a>
                 </td>
                 <td>
                   {% include 'event/_event_status.html' %}
                 </td>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+          {% include 'event/_event_notes.html' %}
+          <br />
+          <a href="{% url 'event.update.notes' o.pk %}">
+            <i class="fa fa-edit"></i>
+            <small>Edit user or staff notes...</small>
+          </a>
+        {% endfor %}
       </div>
     </div>
   </div>
