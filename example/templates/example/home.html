@@ -1,6 +1,10 @@
 {% extends 'event/base.html' %}
 {% load staticfiles %}
 
+{% block stylesheets_extra %}
+  <link rel="stylesheet" href="{% static 'event/css/event.css' %}">
+{% endblock stylesheets_extra %}
+
 {% block sub_title %}
   Example app
 {% endblock sub_title %}
@@ -16,15 +20,9 @@
         <div class="pure-menu pure-menu-open pure-menu-horizontal">
           <ul>
             <li>
-              <a href="{% url 'event.list' %}">
-                <i class="fa fa-calendar"></i>
-                List of events
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'event.create' %}">
-                <i class="fa fa-calendar"></i>
-                New event
+              <a href="{% url 'project.dash' %}">
+                <i class="fa fa-cogs"></i>
+                Dashboard
               </a>
             </li>
           </ul>
@@ -32,4 +30,15 @@
       </div>
     </div>
   </div>
+  {% for o in events %}
+    <div class="pure-g event">
+      <div class="pure-u-1">
+        {% include 'event/_event_date.html' %}
+        {% include 'event/_event_time.html' %}
+        <br />
+        {% include 'event/_event_description.html' %}
+        {% include 'event/_event_notes_public.html' %}
+      </div>
+    </div>
+  {% endfor %}
 {% endblock content %}
