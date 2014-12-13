@@ -140,24 +140,25 @@ class EventManager(models.Manager):
         today = timezone.now().date()
         return today + relativedelta(months=2)
 
-    def _published(self):
+    def _public(self):
         return self.model.objects.filter(
+            permission__slug=Permission.PUBLIC,
             status__publish=True,
         ).exclude(
             deleted=True
         )
 
-    def promoted(self):
-        return self._published().filter(
+    def public_calendar(self):
+        return self._public().filter(
+            start_date__gte=timezone.now().date(),
+            start_date__lte=self._two_months(),
+        )
+
+    def public_promoted(self):
+        return self._public().filter(
             start_date__gt=self._two_months(),
             start_date__lte=self._eight_months(),
             category__promote=True,
-        )
-
-    def published(self):
-        return self._published().filter(
-            start_date__gte=timezone.now().date(),
-            start_date__lte=self._two_months(),
         )
 
 

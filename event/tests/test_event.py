@@ -21,7 +21,77 @@ from .factories import (
 
 class TestEvent(TestCase):
 
-    def test_promoted(self):
+    def test_public_calendar(self):
+        publish = StatusFactory(publish=True)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        user = PermissionFactory(slug=Permission.USER)
+        staff = PermissionFactory(slug=Permission.STAFF)
+        EventFactory(description='a', status=publish, permission=public)
+        EventFactory(description='b', status=publish, permission=user)
+        EventFactory(description='c', status=publish, permission=staff)
+        EventFactory(description='d', status=publish, permission=public)
+        events = Event.objects.public_calendar()
+        self.assertEquals(
+            ['a', 'd'],
+            [e.description for e in events]
+        )
+
+    def test_public_calendar_date(self):
+        """Select published events within the next two months."""
+        today = timezone.now().date()
+        b4 = today + relativedelta(days=-1)
+        one = today + relativedelta(days=7)
+        two = today + relativedelta(days=14)
+        year = today + relativedelta(years=1)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        publish = StatusFactory(publish=True)
+        start = timezone.now().time()
+        EventFactory(
+            description='a', start_date=one, start_time=start, status=publish,
+            permission=public,
+        )
+        EventFactory(
+            description='b', start_date=two, start_time=start, status=publish,
+            permission=public,
+        )
+        # do NOT include this one because it is older than two months
+        EventFactory(
+            description='c', start_date=year, start_time=start, status=publish,
+            permission=public,
+        )
+        # do NOT include this one because it for yesterday
+        EventFactory(
+            description='d', start_date=b4, start_time=start, status=publish,
+            permission=public,
+        )
+        events = Event.objects.public_calendar()
+        self.assertEquals(
+            ['a', 'b'],
+            [e.description for e in events]
+        )
+
+    def test_public_delete(self):
+        today = timezone.now().date()
+        one = today + relativedelta(days=7)
+        public = PermissionFactory(slug=Permission.PUBLIC)
+        publish = StatusFactory(publish=True)
+        start = timezone.now().time()
+        EventFactory(
+            description='a', start_date=one, start_time=start, status=publish,
+            permission=public,
+        )
+        # do NOT include this one because it is deleted
+        EventFactory(
+            description='b', start_date=one, start_time=start, status=publish,
+            permission=public, deleted=True,
+        )
+        events = Event.objects._public()
+        self.assertEquals(
+            ['a',],
+            [e.description for e in events]
+        )
+
+    def test_public_promoted(self):
         """Promoted events are between two and eight months."""
         today = timezone.now().date()
         one = today + relativedelta(days=7)
@@ -62,67 +132,13 @@ class TestEvent(TestCase):
             description='e', start_date=six, start_time=start, status=pending,
             permission=public,
         )
-        events = Event.objects.promoted()
+        events = Event.objects.public_promoted()
         self.assertEquals(
             ['b',],
             [e.description for e in events]
         )
 
-    def test_published_date(self):
-        today = timezone.now().date()
-        b4 = today + relativedelta(days=-1)
-        one = today + relativedelta(days=7)
-        two = today + relativedelta(days=14)
-        year = today + relativedelta(years=1)
-        public = PermissionFactory(slug=Permission.PUBLIC)
-        publish = StatusFactory(publish=True)
-        start = timezone.now().time()
-        EventFactory(
-            description='a', start_date=one, start_time=start, status=publish,
-            permission=public,
-        )
-        EventFactory(
-            description='b', start_date=two, start_time=start, status=publish,
-            permission=public,
-        )
-        # do NOT include this one because it is older than two months
-        EventFactory(
-            description='c', start_date=year, start_time=start, status=publish,
-            permission=public,
-        )
-        # do NOT include this one because it for yesterday
-        EventFactory(
-            description='d', start_date=b4, start_time=start, status=publish,
-            permission=public,
-        )
-        events = Event.objects.published()
-        self.assertEquals(
-            ['a', 'b'],
-            [e.description for e in events]
-        )
-
-    def test_published_delete(self):
-        today = timezone.now().date()
-        one = today + relativedelta(days=7)
-        public = PermissionFactory(slug=Permission.PUBLIC)
-        publish = StatusFactory(publish=True)
-        start = timezone.now().time()
-        EventFactory(
-            description='a', start_date=one, start_time=start, status=publish,
-            permission=public,
-        )
-        # do NOT include this one because it is deleted
-        EventFactory(
-            description='b', start_date=one, start_time=start, status=publish,
-            permission=public, deleted=True,
-        )
-        events = Event.objects.published()
-        self.assertEquals(
-            ['a',],
-            [e.description for e in events]
-        )
-
-    def test_published_status(self):
+    def test_public_status(self):
         today = timezone.now().date()
         one = today + relativedelta(days=7)
         public = PermissionFactory(slug=Permission.PUBLIC)
@@ -137,7 +153,7 @@ class TestEvent(TestCase):
             description='b', start_date=one, start_time=start, status=publish,
             permission=public,
         )
-        events = Event.objects.published()
+        events = Event.objects._public()
         self.assertEquals(
             ['b',],
             [e.description for e in events]

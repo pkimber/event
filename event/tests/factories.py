@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import factory
+from django.utils import timezone
 
 from event.models import (
     Category,
@@ -44,4 +45,5 @@ class EventFactory(factory.django.DjangoModelFactory):
     category = factory.SubFactory(CategoryFactory)
     location = factory.SubFactory(LocationFactory)
     permission = factory.SubFactory(PermissionFactory)
+    start_date = timezone.now().date()
     status = factory.SubFactory(StatusFactory)
