@@ -1,3 +1,4 @@
+<span class="status">
 [
 {% if o.status.publish %}
   <i class="fa fa-check"></i>
@@ -6,6 +7,13 @@
     <i class="fa fa-question"></i>
 {% endif %}
 {{ o.status }}{% if not o.status.publish %}</span>{% endif %}
+&nbsp;
+|
+&nbsp;
+<a href="{% url 'event.update.notes' o.pk %}">
+  <i class="fa fa-edit"></i>
+  Edit user/staff notes
+</a>
 &nbsp;
 |
 &nbsp;
@@ -20,11 +28,5 @@
 {% endif %}
   {{ o.permission.description }}
 </span>
-&nbsp;
-|
-&nbsp;
-<a href="{% url 'event.update.notes' o.pk %}">
-  <i class="fa fa-edit"></i>
-  Edit user or staff notes
-</a>
 ]
+</span>
