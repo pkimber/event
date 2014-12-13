@@ -85,8 +85,20 @@
         <div class="pure-g">
           <div class="pure-u-1 pure-u-md-1-24">
           </div>
+          <div class="pure-u-1 pure-u-md-23-24 notes">
+            <small>
+              <i class="fa fa-user"></i>
+              <span class="user-text">User notes</span>
+            </small>
+          </div>
+        </div>
+        <div class="pure-g">
+          <div class="pure-u-1 pure-u-md-1-24">
+          </div>
           <div class="pure-u-1 pure-u-md-23-24">
-            {% include 'event/_event_notes_user.html' %}
+            {% autoescape off %}
+              {{ o.notes_user }}
+            {% endautoescape %}
           </div>
         </div>
       {% endif %}
@@ -94,8 +106,20 @@
         <div class="pure-g">
           <div class="pure-u-1 pure-u-md-1-24">
           </div>
+          <div class="pure-u-1 pure-u-md-23-24 notes">
+            <small>
+              <i class="fa fa-lock"></i>
+              <span class="staff-text">Staff notes</span>
+            </small>
+          </div>
+        </div>
+        <div class="pure-g">
+          <div class="pure-u-1 pure-u-md-1-24">
+          </div>
           <div class="pure-u-1 pure-u-md-23-24">
-            {% include 'event/_event_notes_staff.html' %}
+            {% autoescape off %}
+              {{ o.notes_staff }}
+            {% endautoescape %}
           </div>
         </div>
       {% endif %}
