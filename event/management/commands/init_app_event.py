@@ -11,7 +11,13 @@ class Command(BaseCommand):
     help = "Initialise 'event' application"
 
     def handle(self, *args, **options):
-        Permission.objects.init_permission(Permission.PUBLIC, 'Public')
-        Permission.objects.init_permission(Permission.STAFF, 'Staff only')
-        Permission.objects.init_permission(Permission.USER, 'User')
+        Permission.objects.init_permission(
+            Permission.PUBLIC, 'Public', 'public'
+        )
+        Permission.objects.init_permission(
+            Permission.STAFF, 'Staff only', 'staff'
+        )
+        Permission.objects.init_permission(
+            Permission.USER, 'User', 'user'
+        )
         print("Initialised 'event' app...")

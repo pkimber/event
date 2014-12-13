@@ -16,7 +16,7 @@ class CategoryForm(RequiredFieldForm):
 
     def __init__(self, *args, **kwargs):
         super(CategoryForm, self).__init__(*args, **kwargs)
-        for name in ('description', 'css_class_name'):
+        for name in ('description',):
             self.fields[name].widget.attrs.update(
                 {'class': 'pure-input-2-3'}
             )
@@ -27,7 +27,6 @@ class CategoryForm(RequiredFieldForm):
             'description',
             'promote',
             'routine',
-            'css_class_name',
         )
 
 

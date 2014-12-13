@@ -18,7 +18,6 @@ class Category(TimeStampedModel):
     description = models.CharField(max_length=200)
     promote = models.BooleanField(default=False)
     routine = models.BooleanField(default=True)
-    css_class_name = models.CharField(max_length=100, blank=True)
 
     class Meta:
         ordering = ('description',)
@@ -56,21 +55,25 @@ reversion.register(Location)
 
 class PermissionManager(models.Manager):
 
-    def create_permission(self, slug, description):
+    def create_permission(self, slug, description, css_class_name):
         permission = self.model(
             slug=slug,
             description=description,
+            css_class_name=css_class_name,
         )
         permission.save()
         return permission
 
-    def init_permission(self, slug, description):
+    def init_permission(self, slug, description, css_class_name):
         try:
             permission = self.model.objects.get(slug=slug)
             permission.description = description
+            permission.css_class_name = css_class_name
             permission.save()
         except self.model.DoesNotExist:
-            permission = self.create_permission(slug, description)
+            permission = self.create_permission(
+                slug, description, css_class_name
+            )
         return permission
 
 
@@ -82,6 +85,7 @@ class Permission(TimeStampedModel):
 
     slug = models.SlugField(unique=True)
     description = models.CharField(max_length=200)
+    css_class_name = models.CharField(max_length=100, blank=True)
     objects = PermissionManager()
 
     class Meta:
