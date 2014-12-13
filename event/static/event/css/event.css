@@ -1,39 +1,33 @@
-.event {
-    border-bottom: 2px solid #eee;
-    border-left: 8px solid rgb(224, 255, 184);
-    padding-left: 10px;
-}
-
 .pending {
     background: rgb(220, 220, 220);
 }
 
 .public {
-    border-bottom: 2px solid #eee;
-    border-left: 8px solid rgb(224, 255, 184);
+    border-bottom: 1px solid #989898;
+    border-left: 8px solid #66FF33;
     padding-left: 10px;
 }
 
 .public-text {
-    background: rgb(224, 255, 184);
+    background: #66FF33;
 }
 
 .staff {
-    border-bottom: 2px solid #eee;
-    border-left: 8px solid rgb(255, 192, 203);
+    border-bottom: 1px solid #989898;
+    border-left: 8px solid #FF9999;
     padding-left: 10px;
 }
 
 .staff-text {
-    background: rgb(255, 192, 203);
+    background: #FF9999;
 }
 
 .user {
-    border-bottom: 2px solid #eee;
-    border-left: 8px solid rgb(255, 255, 102);
+    border-bottom: 1px solid #989898;
+    border-left: 8px solid #FFFF00;
     padding-left: 10px;
 }
 
 .user-text {
-    background: rgb(255, 255, 102);
+    background: #FFFF00;
 }
